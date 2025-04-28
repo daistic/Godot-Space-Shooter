@@ -1,0 +1,77 @@
+[gd_scene load_steps=13 format=3 uid="uid://jln3tt1wuvxx"]
+
+[ext_resource type="Texture2D" uid="uid://71ctcw4wx7f4" path="res://Materials/Player.png" id="1_a02cp"]
+[ext_resource type="Script" uid="uid://cc5mhtw4iknjj" path="res://Scripts/PlayerControls.gd" id="1_go701"]
+[ext_resource type="PackedScene" uid="uid://4s7ncmiusgb6" path="res://Prefabs/Bullet.tscn" id="3_5a7ea"]
+[ext_resource type="PackedScene" uid="uid://cq4jdx148r360" path="res://Prefabs/enemy_1.tscn" id="4_8j60k"]
+[ext_resource type="Script" uid="uid://be1jei5of7ixf" path="res://Scripts/Spawner.gd" id="5_fo5ed"]
+[ext_resource type="PackedScene" uid="uid://co7cu0a42ep0p" path="res://Prefabs/enemy_2.tscn" id="6_5ukr8"]
+[ext_resource type="Script" uid="uid://004bbpt1bkx6" path="res://Scripts/Background.gd" id="7_k7acu"]
+[ext_resource type="Texture2D" uid="uid://cyn7f0vll7qwr" path="res://Materials/Space_Stars2.png" id="7_o06y3"]
+[ext_resource type="Script" uid="uid://bh4oyunmkkoia" path="res://Scripts/Label.gd" id="9_5v1tr"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_a02cp"]
+radius = 19.0
+height = 58.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ukr8"]
+size = Vector2(771, 20)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_k7acu"]
+
+[node name="World" type="Node2D"]
+
+[node name="Player" type="CharacterBody2D" parent="." groups=["Player"]]
+position = Vector2(250, 645)
+script = ExtResource("1_go701")
+move_speed = 200.0
+bullet = ExtResource("3_5a7ea")
+shootDelay = 0.35
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+position = Vector2(-3, -7)
+scale = Vector2(2.3, 2.3)
+texture = ExtResource("1_a02cp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(-2, -6)
+shape = SubResource("CapsuleShape2D_a02cp")
+
+[node name="Spawner" type="StaticBody2D" parent="." groups=["Deadzones"]]
+position = Vector2(242, -100)
+script = ExtResource("5_fo5ed")
+longest_spawn_delay = 1.0
+enemies = Array[PackedScene]([ExtResource("4_8j60k"), ExtResource("6_5ukr8")])
+enemy_noise = 0.7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spawner" groups=["Deadzones"]]
+position = Vector2(-2.5, 0)
+shape = SubResource("RectangleShape2D_5ukr8")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+modulate = Color(1, 0.599228, 0.988843, 1)
+texture_filter = 1
+texture_repeat = 2
+motion_mirroring = Vector2(480, 720)
+script = ExtResource("7_k7acu")
+speed = 375.0
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(-121, -8)
+scale = Vector2(11.5, 11.5)
+texture = ExtResource("7_o06y3")
+centered = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_k7acu")
+offset_left = 200.0
+offset_top = 25.0
+offset_right = 300.0
+offset_bottom = 75.0
+text = "Score:
+0"
+horizontal_alignment = 1
+script = ExtResource("9_5v1tr")

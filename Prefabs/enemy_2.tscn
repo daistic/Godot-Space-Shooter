@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://co7cu0a42ep0p"]
+
+[ext_resource type="Script" uid="uid://dp4q4dfd01vbx" path="res://Scripts/Enemy.gd" id="1_aa0ec"]
+[ext_resource type="Texture2D" uid="uid://bs8ghk2hv4a54" path="res://Materials/Enemy_Bullet (1).png" id="2_aa0ec"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aa0ec"]
+
+[node name="Enemy1" type="CharacterBody2D"]
+script = ExtResource("1_aa0ec")
+moveSpeed = 365.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(3.5, 3.5)
+texture = ExtResource("2_aa0ec")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_aa0ec")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
